@@ -1,0 +1,6 @@
+@InsuranceWebApp_HostAddress = http://localhost:5245
+
+GET {{InsuranceWebApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
