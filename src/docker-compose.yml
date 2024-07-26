@@ -6,6 +6,8 @@ services:
     build:
       context: ./backend
       dockerfile: InsuranceWebApi/Dockerfile
+    ports:
+        - 3000:8081
     networks:
         - insurancenetwork
 

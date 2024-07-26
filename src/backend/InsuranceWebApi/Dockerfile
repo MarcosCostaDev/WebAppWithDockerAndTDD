@@ -9,17 +9,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["InsuranceWebApp/InsuranceWebApp.csproj", "InsuranceWebApp/"]
-RUN dotnet restore "./InsuranceWebApp/./InsuranceWebApp.csproj"
+COPY ["InsuranceWebApi/InsuranceWebApi.csproj", "InsuranceWebApi/"]
+RUN dotnet restore "./InsuranceWebApi/./InsuranceWebApi.csproj"
 COPY . .
-WORKDIR "/src/InsuranceWebApp"
-RUN dotnet build "./InsuranceWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/InsuranceWebApi"
+RUN dotnet build "./InsuranceWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./InsuranceWebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./InsuranceWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "InsuranceWebApp.dll"]
+ENTRYPOINT ["dotnet", "InsuranceWebApi.dll"]

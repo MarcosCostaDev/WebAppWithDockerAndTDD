@@ -81,7 +81,6 @@ public class AdvisorControllerTests : IClassFixture<WebApplicationFactory<Progra
         {
             Sin = "123456788",
             Name = "Mary John",
-            Phone = "87654321",
             Address = "125 test street"
         };
 
@@ -205,7 +204,6 @@ public class AdvisorControllerTests : IClassFixture<WebApplicationFactory<Progra
         {
             Sin = "123456787",
             Name = "John Berry",
-            Phone = "12348765",
             Address = "133 test ave"
         };
 

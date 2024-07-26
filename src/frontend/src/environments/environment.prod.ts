@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: "https://insurancewebapi:8081"
+  url: "https://localhost:3000"
 };

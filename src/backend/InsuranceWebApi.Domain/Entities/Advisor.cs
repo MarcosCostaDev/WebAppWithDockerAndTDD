@@ -52,9 +52,10 @@ public class AdvisorValidator : AbstractValidator<Advisor>
             .NotEmpty().WithMessage("Address must be informed.")
             .MaximumLength(255).WithMessage("Address must have at maximum 255 characters.");
 
-        RuleFor(entity => entity.Phone)
-            .Length(8).When(p => !string.IsNullOrEmpty(p.Phone))
-            .WithMessage("Phone must have 8 characters.");
+        When(entity => !string.IsNullOrEmpty(entity.Phone), () =>
+        {
+            RuleFor(entity => entity.Phone).Length(8).WithMessage("Phone must have 8 characters.");
+        });
 
     }
 }

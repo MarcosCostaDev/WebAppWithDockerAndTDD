@@ -65,7 +65,6 @@ export class RegisterPage implements OnInit {
     private advisorService: AdvisorService,
     private alertController: AlertController) { 
 
-
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation()?.extras.state) {
           this.advisor = this.router.getCurrentNavigation()?.extras.state as Advisor;
@@ -105,11 +104,6 @@ export class RegisterPage implements OnInit {
   }
 
   ionViewDidEnter(){
-
-    
-
-    
-
     if(!this.existedRecord){
       this.advisorForm.reset();
       return;
@@ -154,11 +148,11 @@ export class RegisterPage implements OnInit {
         result = await this.advisorService.create(request);
       }
       await saveSuccessfullyOnSaveDialog.present();
-    } catch (e) {
+    } catch (e:any) {
       console.log(e);
       var errorOnSaveDialog = await this.alertController.create({
         header: "Error on save",
-        message: `${JSON.stringify(e)}`,
+        message: "Something went wrong.",
         buttons: [
           {
             text: "Ok",
