@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MaskitoOptions } from '@maskito/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { Advisor } from 'src/entities/advisor';
 import { AdvisorService } from '../services/advisor.service';
 import { AlertController } from '@ionic/angular';
 import { ApiResponse } from 'src/entities/apiResponse';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -14,52 +15,148 @@ import { ApiResponse } from 'src/entities/apiResponse';
 export class RegisterPage implements OnInit {
 
 
-  public advisor = {} as Advisor;
-  public existedRecord: boolean = true;
+  public advisorForm: FormGroup = new FormGroup({});
+  validation_messages = {
+    'sin': [
+      { type: 'required', message: 'SIN is required.' },
+      { type: 'minlength', message: 'SIN must be at least 11 characters long.' },
+      { type: 'maxlength', message: 'SIN cannot be more than 11 characters long.' },
+      { type: 'pattern', message: 'Your SIN must be provider in the format ###-###-###.' }
+    ],
+    'name': [
+      { type: 'required', message: 'Name is required.' },
+      { type: 'maxlength', message: 'Name cannot be more than 255 characters long.' },
+    ],
+    'phone': [
+      { type: 'minlength', message: 'Phone must be at least 9 characters long.' },
+      { type: 'maxlength', message: 'Phone cannot be more than 9 characters long.' },
+      { type: 'pattern', message: 'Your Phone must be provider in the format ####-####.' }
+    ],
+    'address': [
+      { type: 'maxlength', message: 'Address cannot be more than 255 characters long.' }
+    ]
+  }
 
+  public existedRecord: boolean = true;
+  public advisor = {} as Advisor;
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
   public readonly sinMaskOption: MaskitoOptions = {
-    mask: /^\d{3}-\d{2}-\d{4}$/,
+    mask: [
+      ...Array(3).fill(/\d/),
+      '-',
+      ...Array(3).fill(/\d/),
+      '-',
+      ...Array(3).fill(/\d/)
+    ]
   };
 
   public readonly phoneMaskOption: MaskitoOptions = {
-    mask: /^\d{4}-\d{4}$/,
+    mask: [
+      ...Array(4).fill(/\d/),
+      '-',
+      ...Array(4).fill(/\d/),
+    ]
   };
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private advisorService: AdvisorService,
-    private alertController: AlertController) { }
+    private alertController: AlertController) { 
+
+
+      this.route.queryParams.subscribe(params => {
+        if (this.router.getCurrentNavigation()?.extras.state) {
+          this.advisor = this.router.getCurrentNavigation()?.extras.state as Advisor;
+          this.existedRecord = true;
+        }
+         else{
+          this.existedRecord = false;
+         }
+      });
+    }
 
   ngOnInit() {
-    this.advisor = (this.router.getCurrentNavigation()?.extras.state || {}) as Advisor;
-    this.existedRecord = this.router.getCurrentNavigation()?.extras.state != undefined;
+
+    this.advisorForm = this.formBuilder.group({
+      sin: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(11),
+        Validators.maxLength(11),
+        Validators.pattern("^\\d{3}-\\d{3}-\\d{3}$")
+      ])],
+      name: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.maxLength(255),
+        ]),
+      ],
+      phone: ['', Validators.compose([
+        Validators.minLength(9),
+        Validators.maxLength(9),
+        Validators.pattern('^\\d{4}-\\d{4}$')
+      ])],
+      address: ['', Validators.compose([
+        Validators.maxLength(255),
+      ])],
+    });
+  }
+
+  ionViewDidEnter(){
+
+    
+
+    
+
+    if(!this.existedRecord){
+      this.advisorForm.reset();
+      return;
+    }
+
+    this.advisorForm.setValue({
+        sin: this.advisor.getMaskedSin(),
+        name: this.advisor.name,
+        phone: this.advisor.getMaskedPhone(),
+        address: this.advisor.address,
+    });
   }
 
 
-  async save() {
-    try {
 
-      var savedSuccessfully = await this.alertController.create({
-        header: "Saved!",
-        message: "Are you sure you want to delete this record?",
-        buttons: [
-          {
-            text: "Ok",
-            handler: () => {
-              this.router.navigate(['/list']);
-            }
+  async save() {
+    if (!this.advisorForm.valid) return;
+
+    var saveSuccessfullyOnSaveDialog = await this.alertController.create({
+      header: "Saved!",
+      message: "Your record has been saved successfully!",
+      buttons: [
+        {
+          text: "Ok",
+          handler: () => {
+            this.router.navigate(['/list']);
           }
-        ]
-      });
+        }
+      ]
+    });
+
+    try {
       let result: ApiResponse<Advisor>;
+      let request:Advisor = new Advisor(this.advisorForm.value["sin"] as string, 
+                                        this.advisorForm.value["name"] as string, 
+                                        this.advisorForm.value["phone"] as string, 
+                                        this.advisorForm.value["address"] as string);
       if (this.existedRecord) {
-        result = await this.advisorService.update(this.advisor);
+        result = await this.advisorService.update(request);
       }
       else {
-        result = await this.advisorService.create(this.advisor);
+        result = await this.advisorService.create(request);
       }
-      await savedSuccessfully.present();
+      await saveSuccessfullyOnSaveDialog.present();
     } catch (e) {
-      var savedSuccessfully = await this.alertController.create({
+      console.log(e);
+      var errorOnSaveDialog = await this.alertController.create({
         header: "Error on save",
         message: `${JSON.stringify(e)}`,
         buttons: [
@@ -70,6 +167,8 @@ export class RegisterPage implements OnInit {
         ]
       });
 
+      console.log(e);
+      await errorOnSaveDialog.present();
     }
 
   }

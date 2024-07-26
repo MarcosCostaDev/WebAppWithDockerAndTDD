@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { RegisterPageRoutingModule } from './register-routing.module';
 
 import { RegisterPage } from './register.page';
-import { MaskitoDirective } from '@maskito/angular';
 import { AdvisorService } from '../services/advisor.service';
 import { provideHttpClient } from '@angular/common/http';
+import { MaskitoDirective } from '@maskito/angular';
+
 
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     FormsModule,
-    MaskitoDirective, 
     IonicModule,
-    RegisterPageRoutingModule
+    RegisterPageRoutingModule,
+    MaskitoDirective
   ],
   providers:[
     AdvisorService,

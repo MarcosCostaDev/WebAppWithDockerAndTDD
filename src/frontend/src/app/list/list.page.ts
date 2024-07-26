@@ -18,8 +18,17 @@ export class ListPage implements OnInit {
   public records: Array<Advisor> = [];
 
   ngOnInit() {
-    this.advisorService.get().then(result => {
-      this.records = result.data;
+
+  }
+
+  ionViewWillEnter(){
+    this.loadRecords();
+  }
+
+
+  private loadRecords(name:string = ''){
+    this.advisorService.getByName(name).then(result => {
+      this.records = result.data.map(p => new Advisor(p.sin, p.name, p.phone, p.address));
     })
   }
 
@@ -44,10 +53,9 @@ export class ListPage implements OnInit {
         },
         {
           text: "Delete it!",
-          handler: () => {
-            console.log("deleting....");
-            setTimeout(() => console.log("deleted"), 5000);
-
+          handler: async () => {
+            await this.advisorService.delete(advisor);
+            this.loadRecords();
           }
         }
       ]
@@ -57,9 +65,7 @@ export class ListPage implements OnInit {
   }
 
   searchBy(textChange: any) {
-    this.advisorService.getByName(textChange.detail.value).then(result => {
-      this.records = result.data;
-    })
+    this.loadRecords(textChange.detail.value)
   }
 
 }

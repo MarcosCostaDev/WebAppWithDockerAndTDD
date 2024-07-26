@@ -46,14 +46,15 @@ public class AdvisorValidator : AbstractValidator<Advisor>
 
         RuleFor(entity => entity.Sin)
             .NotEmpty().WithMessage("SIN must be informed.")
-            .Length(9).WithMessage("SIN must have 8 characters.");
+            .Length(9).WithMessage("SIN must have 9 characters.");
 
         RuleFor(entity => entity.Address)
             .NotEmpty().WithMessage("Address must be informed.")
             .MaximumLength(255).WithMessage("Address must have at maximum 255 characters.");
 
         RuleFor(entity => entity.Phone)
-            .Length(8).WithMessage("Phone must have 8 characters.");
+            .Length(8).When(p => !string.IsNullOrEmpty(p.Phone))
+            .WithMessage("Phone must have 8 characters.");
 
     }
 }

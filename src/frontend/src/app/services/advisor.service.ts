@@ -25,11 +25,13 @@ export class AdvisorService {
   }
 
   create(advisor: Advisor): Promise<ApiResponse<Advisor>> {
+    console.log(advisor);
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return firstValueFrom(this.http.post<ApiResponse<Advisor>>(`${environment.url}/api/Advisor/`, JSON.stringify(advisor), { headers: headers }));
   }
 
   update(advisor: Advisor): Promise<ApiResponse<Advisor>> {
+    console.log(advisor);
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return firstValueFrom(this.http.put<ApiResponse<Advisor>>(`${environment.url}/api/Advisor/`, JSON.stringify(advisor), { headers: headers }));
   }

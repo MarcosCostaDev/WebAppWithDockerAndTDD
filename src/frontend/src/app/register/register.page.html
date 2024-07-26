@@ -5,37 +5,75 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="checkmark"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Register Advisor</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-card>
-    <ion-card-content>
-      <ion-list>
-        <ion-item>
-          <ion-input labelPlacement="floating" [(ngModel)]="advisor.sin" [disabled]="existedRecord" required="true" [maskito]="sinMaskOption">
-            <div slot="label">SIN <ion-text color="danger">(Required)</ion-text></div>
-          </ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input labelPlacement="floating" [(ngModel)]="advisor.name" required="true">
-            <div slot="label">Name <ion-text color="danger">(Required)</ion-text></div>
-          </ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Phone" labelPlacement="floating" [(ngModel)]="advisor.phone" [maskito]="phoneMaskOption"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Address" labelPlacement="floating" [(ngModel)]="advisor.address"></ion-input>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+  <form [formGroup]="advisorForm" (ngSubmit)="save()" novalidate>
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Register Advisor</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon aria-hidden="true" name="reorder-three-outline" slot="start"></ion-icon>
+            <ion-input labelPlacement="floating" formControlName="sin" [maskito]="sinMaskOption" [maskitoElement]="maskPredicate" placeholder="xxx-xxx-xxx">
+              <div slot="label">SIN <ion-text color="danger">(Required)</ion-text></div>
+            </ion-input>
+          </ion-item>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.sin">
+              <ion-text class="ion-text-end" color="danger"
+                *ngIf="advisorForm.get('sin')?.hasError(validation.type) && (advisorForm.get('sin')?.dirty || advisorForm.get('sin')?.touched)">
+                {{ validation.message }}
+              </ion-text>
+            </ng-container>
+          </div>
+          <ion-item>
+            <ion-icon aria-hidden="true" name="body-outline" slot="start"></ion-icon>
+            <ion-input labelPlacement="floating" formControlName="name">
+              <div slot="label">Name <ion-text color="danger">(Required)</ion-text></div>
+            </ion-input>
+          </ion-item>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.name">
+              <ion-text class="ion-text-end" color="danger"
+                *ngIf="advisorForm.get('name')?.hasError(validation.type) && (advisorForm.get('name')?.dirty || advisorForm.get('name')?.touched)">
+                {{ validation.message }}
+              </ion-text>
+            </ng-container>
+          </div>
+          <ion-item>
+            <ion-icon aria-hidden="true" name="phone-portrait-outline" slot="start"></ion-icon>
+            <ion-input label="Phone" labelPlacement="floating" formControlName="phone" placeholder="xxxx-xxxx" [maskitoElement]="maskPredicate" [maskito]="phoneMaskOption"></ion-input>
+          </ion-item>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.phone">
+              <ion-text class="ion-text-end" color="danger"
+                *ngIf="advisorForm.get('phone')?.hasError(validation.type) && (advisorForm.get('phone')?.dirty || advisorForm.get('phone')?.touched)">
+                {{ validation.message }}
+              </ion-text>
+            </ng-container>
+          </div>
+          <ion-item>
+            <ion-icon aria-hidden="true" name="pin-outline" slot="start"></ion-icon>
+            <ion-input label="Address" labelPlacement="floating" formControlName="address"></ion-input>
+          </ion-item>
+          <div class="validation-errors">
+            <ng-container *ngFor="let validation of validation_messages.address">
+              <ion-text class="ion-text-end" color="danger"
+                *ngIf="advisorForm.get('address')?.hasError(validation.type) && (advisorForm.get('address')?.dirty || advisorForm.get('address')?.touched)">
+                {{ validation.message }}
+              </ion-text>
+            </ng-container>
+          </div>
+          
+          <ion-button type="submit" color="primary" expand="block" class="ion-margin" [disabled]="!advisorForm.valid">
+            <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon> &nbsp;
+            save
+          </ion-button>
+
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </form>
 </ion-content>

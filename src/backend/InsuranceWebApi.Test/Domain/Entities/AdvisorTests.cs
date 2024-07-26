@@ -41,14 +41,13 @@ public class AdvisorTests
     }
 
     [Fact]
-    public void Phone_ShouldNotBeEmpty()
+    public void Phone_ShouldBeEmpty()
     {
         var advisor = new Advisor("Jane Smith", "123456789", "456 Elm St", "");
         var validator = new AdvisorValidator();
 
         var result = validator.Validate(advisor);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == "Phone");
+        result.IsValid.Should().BeTrue();
     }
 }

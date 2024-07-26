@@ -5,11 +5,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="newRecord()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">list</ion-title>
@@ -24,38 +19,38 @@
         <ion-row>
           <ion-col>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text color="primary">SIN</ion-text>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text color="primary">Name</ion-text>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text color="primary">Address</ion-text>
           </ion-col>
-          <ion-col>
-            <ion-text color="primary">Phone</ion-text>
+          <ion-col class="ion-text-left">
+            <ion-text color="primary" >Phone</ion-text>
           </ion-col>
         </ion-row>
         <ion-row *ngFor="let item of records">
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-button fill="clear" color="primary" (click)="edit(item)">
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
-            <ion-button fill="clear"   color="danger" (click)="delete(item)">
+            <ion-button fill="clear" color="danger" (click)="delete(item)">
               <ion-icon name="trash-outline"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text>{{item.getMaskedSin()}}</ion-text>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text>{{item.name}}</ion-text>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text>{{item.address}}</ion-text>
           </ion-col>
-          <ion-col>
+          <ion-col class="ion-text-left">
             <ion-text>{{item.getMaskedPhone()}}</ion-text>
           </ion-col>
         </ion-row>
