@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Register Advisor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Register Advisor</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-input labelPlacement="floating" [(ngModel)]="advisor.sin" [disabled]="existedRecord" required="true" [maskito]="sinMaskOption">
+            <div slot="label">SIN <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input labelPlacement="floating" [(ngModel)]="advisor.name" required="true">
+            <div slot="label">Name <ion-text color="danger">(Required)</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Phone" labelPlacement="floating" [(ngModel)]="advisor.phone" [maskito]="phoneMaskOption"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Address" labelPlacement="floating" [(ngModel)]="advisor.address"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

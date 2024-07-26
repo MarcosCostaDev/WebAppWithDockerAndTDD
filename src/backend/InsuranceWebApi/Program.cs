@@ -13,6 +13,7 @@ builder.Services.AddSingleton(new CacheContext<Advisor>(builder.Configuration.Ge
                 .AddTransient<IAdvisorAppService, AdvisorAppService>()
                 .AddTransient<IAdvisorRepository, AdvisorRepository>();
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,6 +26,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // global cors policy
+    app.UseCors(x => x
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true) // allow any origin
+        .AllowCredentials()); // allow credentials
 }
 
 app.UseHttpsRedirection();

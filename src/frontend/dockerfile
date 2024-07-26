@@ -1,0 +1,17 @@
+FROM node:alpine3.20 as build-step
+
+WORKDIR /usr/src/app
+
+RUN npm install -g @ionic/cli
+
+COPY package.json /usr/src/app
+
+RUN npm install
+
+ADD . /usr/src/app/
+
+RUN ionic build --prod
+
+FROM nginx:1.26.1-alpine 
+
+COPY --from=build-step /usr/src/app/www /usr/share/nginx/html
