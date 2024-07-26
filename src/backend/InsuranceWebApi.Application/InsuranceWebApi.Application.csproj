@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Results\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\InsuranceWebApi.Domain\InsuranceWebApi.Domain.csproj" />
     <ProjectReference Include="..\InsuranceWebApi.Infra\InsuranceWebApi.Infra.csproj" />
   </ItemGroup>

@@ -31,6 +31,9 @@
           <ion-col class="ion-text-left">
             <ion-text color="primary" >Phone</ion-text>
           </ion-col>
+          <ion-col class="ion-text-left">
+            <ion-text color="primary" >Status</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row *ngFor="let item of records">
           <ion-col class="ion-text-left">
@@ -52,6 +55,9 @@
           </ion-col>
           <ion-col class="ion-text-left">
             <ion-text>{{item.getMaskedPhone()}}</ion-text>
+          </ion-col>
+          <ion-col class="ion-text-left">
+            <ion-icon name="ellipse" [color]="getHealthStatusColor(item.heathStatus)"></ion-icon>
           </ion-col>
         </ion-row>
       </ion-grid>

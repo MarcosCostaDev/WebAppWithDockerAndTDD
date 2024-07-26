@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Advisor } from 'src/entities/advisor';
+import { Advisor, HeathStatusEnum } from 'src/entities/advisor';
 import { AdvisorService } from '../services/advisor.service';
 
 @Component({
@@ -21,14 +21,25 @@ export class ListPage implements OnInit {
 
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.loadRecords();
   }
 
+  public getHealthStatusColor(status: HeathStatusEnum) {
+    switch (status) {
+      case HeathStatusEnum.Green:
+        return "success";
+      case HeathStatusEnum.Red:
+        return "danger";
+      case HeathStatusEnum.Yellow:
+        return "warning";
+    }
+  }
 
-  private loadRecords(name:string = ''){
+
+  private loadRecords(name: string = '') {
     this.advisorService.getByName(name).then(result => {
-      this.records = result.data.map(p => new Advisor(p.sin, p.name, p.phone, p.address));
+      this.records = result.data.map(p => new Advisor(p.sin, p.name, p.phone, p.address, p.heathStatus));
     })
   }
 

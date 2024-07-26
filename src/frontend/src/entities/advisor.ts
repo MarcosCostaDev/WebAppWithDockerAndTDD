@@ -1,5 +1,12 @@
+export enum HeathStatusEnum
+{
+    Green,
+    Yellow,
+    Red
+}
+
 export class Advisor {
-    constructor(public sin: string, public name: string, public phone: string, public address: string){
+    constructor(public sin: string, public name: string, public phone: string, public address: string, public heathStatus:HeathStatusEnum = HeathStatusEnum.Green){
         this.phone = phone?.replace(/\D+/g, '');
         this.sin = sin?.replace(/\D+/g, '');
     }
