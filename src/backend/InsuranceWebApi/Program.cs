@@ -2,6 +2,7 @@ using InsuranceWebApi.Application.AppServices;
 using InsuranceWebApi.Application.AppServices.Interfaces;
 using InsuranceWebApi.Domain.Entities;
 using InsuranceWebApi.Domain.Repositories;
+using InsuranceWebApi.Filters;
 using InsuranceWebApi.Infra.Contexts;
 using InsuranceWebApi.Infra.Repositories;
 
@@ -14,7 +15,10 @@ builder.Services.AddSingleton(new CacheContext<Advisor>(builder.Configuration.Ge
                 .AddTransient<IAdvisorRepository, AdvisorRepository>();
 
 builder.Services.AddCors();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<LogFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
