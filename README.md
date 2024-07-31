@@ -26,7 +26,7 @@ Web App that runs on docker compose
 ### Requirements
 
 - Docker
-    - If you are on **Windows**, Install [Docker Desktop on Windows](https://docs.docker.com/desktop/install-windows-install/)
+    - If you are on **Windows**, Install [Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/)
     - If you are on MacOs, Install [Docker Desktop on Mac](https://docs.docker.com/desktop/install/mac-install/)
     - If you are on Linux, find the right installer in [Docker Engine](https://docs.docker.com/engine/install/)
 
