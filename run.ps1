@@ -1,2 +1,2 @@
 Set-Location ./src
-docker compose up
+docker-compose up
