@@ -1,4 +1,4 @@
 #!/bin/bash
 cd ./src
 
-docker-compose up
+docker compose up
